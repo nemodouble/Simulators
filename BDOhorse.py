@@ -1,5 +1,7 @@
 import random
 import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.ticker import PercentFormatter
 
 # 값 받기
 print("# 엔터 입력시 기본값 설정 #")
@@ -77,6 +79,7 @@ except Exception as e:
     print("예외 발생", e)
 
 # 성공 스택 분포표 출력
-plt.hist(success_try_count_list, bins=20)
-plt.xticks([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100])
+plt.hist(success_try_count_list, bins=20, weights=np.ones(len(success_try_count_list))/len(success_try_count_list))
+plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
+plt.xticks(np.arange(0, 100, 5))
 plt.show()
