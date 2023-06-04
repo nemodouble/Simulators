@@ -18,6 +18,12 @@ try:
 except:
     do_print_simulation = False
 
+print("꿈결마 여부(기본값:F) T/F: ", end='')
+try:
+    input_str = input()
+    is_dream_horse = input_str == 'T' or input_str == 't'
+except:
+    is_dream_horse = False
 
 success_try_count_list = []
 high_try_count = 0
@@ -25,7 +31,10 @@ high_try_count = 0
 # 시뮬레이션
 for try_person_index in range(1, total_try_person_count + 1):
     # 최초 성공 확률
-    success_percentage = 0.01
+    if is_dream_horse:
+        success_percentage = 0.03
+    else:
+        success_percentage = 0.01
     # 스택
     try_stack_count = 0
     while True:
@@ -33,7 +42,7 @@ for try_person_index in range(1, total_try_person_count + 1):
         if random.random() < success_percentage:
             # 시뮬레이션 출력
             if do_print_simulation:
-                print(str(try_person_index) + "번째 환장마피해자 " + str(try_stack_count) + "트 성공")
+                print(str(try_person_index) + "번째 환장마피해자 " + str(try_stack_count) + "스택 성공")
             # 성공 횟수 저장
             success_try_count_list.append(try_stack_count)
             # 최대 스택일시 저장
@@ -41,7 +50,7 @@ for try_person_index in range(1, total_try_person_count + 1):
                 high_try_count = try_stack_count
             # 확률 및 스택 초기화
             try_stack_count = 0
-            success_percentage = 0.01
+            success_percentage = 0.03
             break
         # 실패시
         else:
@@ -49,7 +58,8 @@ for try_person_index in range(1, total_try_person_count + 1):
             if do_print_simulation:
                 print(str(try_person_index) + "번째 환장마피해자 " + str(try_stack_count) + "스택 실패")
             # 스택 및 성공확률 증가
-            success_percentage += 0.002
+            if not is_dream_horse:
+                success_percentage += 0.002
             try_stack_count += 1
     if do_print_simulation:
         print()
@@ -79,7 +89,10 @@ except Exception as e:
     print("예외 발생", e)
 
 # 성공 스택 분포표 출력
-plt.hist(success_try_count_list, bins=20, weights=np.ones(len(success_try_count_list))/len(success_try_count_list))
+# 유효 트라이
+max_value = 100
+plt.hist(success_try_count_list, bins=20, range=[0, max_value], \
+         weights=np.ones(len(success_try_count_list)) / len(success_try_count_list))
 plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
-plt.xticks(np.arange(0, 100, 5))
+plt.xticks(np.arange(0, max_value, 5))
 plt.show()
