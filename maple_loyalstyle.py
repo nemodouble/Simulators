@@ -53,22 +53,22 @@ for i in range(simulating_count):
             if do_print_log_each_simulation:
                 print("스라벨 무기 획득")
 
-        elif random_float <= cape_percentage_range:
+        elif weapon_percentage_range < random_float <= cape_percentage_range:
             get_cape = True
             if do_print_log_each_simulation:
                 print("스라벨 망토 획득")
 
-        elif random_float <= shoes_percentage_range:
+        elif cape_percentage_range < random_float <= shoes_percentage_range:
             get_shoes = True
             if do_print_log_each_simulation:
                 print("스라벨 신발 획득")
 
-        elif random_float <= cloth_percentage_range:
+        elif shoes_percentage_range < random_float <= cloth_percentage_range:
             get_cloth = True
             if do_print_log_each_simulation:
                 print("스라벨 한벌옷 획득")
 
-        elif random_float <= head_percentage_range:
+        elif cloth_percentage_range < random_float <= head_percentage_range:
             get_head = True
             if do_print_log_each_simulation:
                 print("스라벨 머리 획득")
@@ -87,6 +87,21 @@ for i in range(simulating_count):
 
 print("\n평균 " + str(sum(total_spend_money_array) / len(total_spend_money_array)) + "원 소모 ")
 
+# 퍼센트 확인
+total_spend_money_array.sort()
+print("\n"
+      "자신의 소모 금액이 몇 퍼센트에 위치 하는지 확인")
+print("금액 입력 : ", end='')
+try:
+    my_money = int(input())
+    if my_money <= 0:
+        raise Exception
+    for i in range(1, len(total_spend_money_array)):
+        if total_spend_money_array[i] > my_money:
+            print("상위 " + str(i / simulating_count * 100) + "%")
+            break
+except Exception as e:
+    print("예외 발생", e)
 total_spend_money_array.sort()
 
 # 유의미한 최대 숫자
